@@ -4,14 +4,10 @@ section {
     align-items: center;
     padding: 0 20px;
     border-bottom: 1px solid #999999;
-    background: linear-gradient(180deg, #a16ff7, #53cbff, #dddddd);
+    background: linear-gradient(0deg, #a16ff7, #53cbff, #dddddd);
 }
 section:last-child {
     border: none;
-}
-
-main div {
-    height: 100px;
 }
 
 section h2 {
@@ -22,6 +18,12 @@ section p {
     flex: 3 1 0;
     text-align: center;
 }
-section button {
+section div {
     flex: 1 1 0;
+    text-align: center;
+}
+
+button {
+    border: none;
+    width: 50%;
 }
