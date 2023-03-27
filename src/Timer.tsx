@@ -7,9 +7,7 @@ import './Timer.css';
 const restPeriod = 17 * 60;
 const workPeriod = 52 * 60;
 function Timer() {
-    const [restTime, setRestTime] = useState(0);
     const [isRestTimeCounting, setIsRestTimeCounting] = useState(false);
-    const [workTime, setWorkTime] = useState(workPeriod);
     const [isWorkTimeCounting, setIsWorkTimeCounting] = useState(false);
 
     const [minutes, setMinutes] = useState(0);
@@ -19,38 +17,50 @@ function Timer() {
 
     useEffect(() => {
         if (isWorkTimeCounting) {
-            const endDate = (new Date().getTime()) + workPeriod * 1000;
-            setEndTime(endDate);
             const intervalId = setInterval(() => {
-                setWorkTime(time => time - 1);
-            }, 1000);
+                const remaining = (endTime - (new Date()).getTime()) / 1000;
+                if (remaining <= 0) {
+                    setIsWorkTimeCounting(false);
+                    const endDate = (new Date().getTime()) + restPeriod * 1000;
+                    setEndTime(endDate);
+                    setIsRestTimeCounting(true);
+                }
+                else {
+                    setMinutes(() => Math.floor(remaining / 60));
+                    setSeconds(() => Math.floor(remaining % 60));
+                }
+            }, 100);
             return () => clearInterval(intervalId);
         }
     }, [isWorkTimeCounting]);
 
     useEffect(() => {
         if (isRestTimeCounting) {
-            const endDate = new Date().getTime() + restPeriod * 1000;
-            setEndTime(endDate);
+            const intervalId = setInterval(() => {
+                const remaining = (endTime - (new Date()).getTime()) / 1000;
+                if (remaining <= 0) {
+                    setIsRestTimeCounting(false);
+                }
+                else {
+                    setMinutes(() => Math.floor(remaining / 60));
+                    setSeconds(() => Math.floor(remaining % 60));
+                }
+            }, 100);
+            return () => clearInterval(intervalId);
         }
     }, [isRestTimeCounting]);
-
-    useEffect(() => {
-        const remaining = (endTime - (new Date()).getTime()) / 1000;
-        setMinutes(() => Math.floor(remaining / 60));
-        setSeconds(() => Math.floor(remaining % 60));
-        if (remaining <= 0) {
-            
-        }
-    });
 
     return (
         <div className="Timer">
             <Header/>
             <h1 className='title'>{isRestTimeCounting ? 'Rest Time' : 'Work Time'}</h1>
             <p className='countdown'>{`${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`}</p>
-            <p className='end-time'>{endTime}</p>
-            <button className='start' onClick={() => { setIsWorkTimeCounting(true); }} disabled={isWorkTimeCounting}>Start</button>
+            { endTime === 0 ? <></> : (<p className='end-time'>{(new Date(endTime)).toLocaleString('en-US')}</p>)}
+            <button className='start' onClick={() => {
+                const endDate = (new Date().getTime()) + workPeriod * 1000;
+                setEndTime(endDate);
+                setIsWorkTimeCounting(true);
+            }} disabled={isWorkTimeCounting || isRestTimeCounting}>Start</button>
         </div>
     );
 }
