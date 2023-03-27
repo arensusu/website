@@ -1,0 +1,32 @@
+.countdown {
+    font-size: 96px;
+    text-align: center;
+    margin: 40px auto;
+}
+
+.title {
+    text-align: center;
+}
+
+.start {
+    width: 120px;
+    height: 80px;
+    font-size: 32px;
+    border: 1px solid #000000;
+    margin: 0 auto;
+    display: block;
+}
+
+.start:hover {
+    background-color: #999999;
+}
+
+.start:disabled {
+    border: none;
+    background-color: #ffffff;
+    color: #ffffff;
+}
+
+.end-time {
+    text-align: center;
+}
