@@ -4,10 +4,10 @@ import Header from './Header';
 
 
 function Timer() {
-    const restPeriod = 3;
+    const restPeriod = 52 * 60;
     const [restTime, setRestTime] = useState(0);
     const [isRestTimeCounting, setIsRestTimeCounting] = useState(false);
-    const workPeriod = 5;
+    const workPeriod = 17 * 60;
     const [workTime, setWorkTime] = useState(workPeriod);
     const [isWorkTimeCounting, setIsWorkTimeCounting] = useState(false);
 
