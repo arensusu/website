@@ -19,6 +19,9 @@ export default function Header() {
             <Link to="/Timer">Timer</Link>
           </li>
           <li>
+            <Link to="/Bookkeeping">Bookkeeping</Link>
+          </li>
+          <li>
             <Link to="/">Web3</Link>
           </li>
         </ul>

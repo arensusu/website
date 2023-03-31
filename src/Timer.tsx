@@ -53,6 +53,17 @@ function Timer() {
         }
     }, [isRestTimeCounting]);
 
+    useEffect(() => {
+        if (workingMethod === '52/17') {
+            setMinutes(52);
+        } else {
+            setMinutes(25);
+        }
+        setSeconds(0);
+        setEndTime(0);
+        setIsWorkTimeCounting(false);
+        setIsRestTimeCounting(false);
+    }, [workingMethod]);
 
     return (
         <div className="Timer">
