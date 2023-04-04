@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Header from './Header';
 import './Timer.css';
 
@@ -16,16 +16,15 @@ function Timer() {
     const [minutes, setMinutes] = useState(0);
     const [seconds, setSeconds] = useState(0);
 
-    const [endTime, setEndTime] = useState(0);
+    const endTime = useRef(0);
 
     useEffect(() => {
         if (isWorkTimeCounting) {
             const intervalId = setInterval(() => {
-                const remaining = (endTime - (new Date()).getTime()) / 1000;
+                const remaining = (endTime.current - (new Date()).getTime()) / 1000;
                 if (remaining <= 0) {
                     setIsWorkTimeCounting(false);
-                    const endDate = (new Date().getTime()) + METHOD[workingMethod as keyof typeof METHOD][1] * 1000;
-                    setEndTime(endDate);
+                    endTime.current = (new Date().getTime()) + METHOD[workingMethod as keyof typeof METHOD][1] * 1000;
                     setIsRestTimeCounting(true);
                 }
                 else {
@@ -40,7 +39,7 @@ function Timer() {
     useEffect(() => {
         if (isRestTimeCounting) {
             const intervalId = setInterval(() => {
-                const remaining = (endTime - (new Date()).getTime()) / 1000;
+                const remaining = (endTime.current - (new Date()).getTime()) / 1000;
                 if (remaining <= 0) {
                     setIsRestTimeCounting(false);
                 }
@@ -60,10 +59,15 @@ function Timer() {
             setMinutes(25);
         }
         setSeconds(0);
-        setEndTime(0);
+        endTime.current = 0;
         setIsWorkTimeCounting(false);
         setIsRestTimeCounting(false);
     }, [workingMethod]);
+
+    const startCounting = () => {
+        endTime.current = (new Date().getTime()) + METHOD[workingMethod as keyof typeof METHOD][0] * 1000;
+        setIsWorkTimeCounting(true);
+    }
 
     return (
         <div className="Timer">
@@ -74,12 +78,8 @@ function Timer() {
             </div>
             <h1 className='title'>{isRestTimeCounting ? 'Rest Time' : 'Work Time'}</h1>
             <p className='countdown'>{`${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`}</p>
-            { endTime === 0 ? <></> : (<p className='end-time'>{(new Date(endTime)).toLocaleString('en-US')}</p>)}
-            <button className='start' onClick={() => {
-                const endDate = (new Date().getTime()) + METHOD[workingMethod as keyof typeof METHOD][0] * 1000;
-                setEndTime(endDate);
-                setIsWorkTimeCounting(true);
-            }} disabled={isWorkTimeCounting || isRestTimeCounting}>Start</button>
+            { endTime.current === 0 ? <></> : <p className='end-time'>{(new Date(endTime.current)).toLocaleString('en-US')}</p>}
+            <button className='start' onClick={startCounting} disabled={isWorkTimeCounting || isRestTimeCounting}>Start</button>
         </div>
     );
 }
