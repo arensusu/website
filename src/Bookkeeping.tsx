@@ -7,6 +7,7 @@ const Bookkeeping = () => {
 
     const [apiData, setApiData] = useState([]);
     const [searchFormData, setSearchFormData] = useState<{ user: string; startDate: string; endDate: string; category: string[]}>({ user: '', startDate: '', endDate: '', category: []});
+    const [addFormData, setAddFormData] = useState<{ user: string; date: string; category: string; cost: string}>({ user: '', date: '', category: '', cost: ''});
 
     const handleSearchFormChange = (event: ChangeEvent<HTMLInputElement>) => {
         const attrName = event.target.name;
@@ -46,7 +47,6 @@ const Bookkeeping = () => {
         event.preventDefault();
         const { category, ...others} = searchFormData;
         const queryApi = `${api}?${new URLSearchParams(others).toString()}`;
-        console.log(queryApi);
         fetch(queryApi)
         .then(response => response.json())
         .then(data => {
@@ -59,7 +59,17 @@ const Bookkeeping = () => {
         setSearchFormData({ user: '', startDate: '', endDate: '', category: []});
     };
 
-    const writeData = () => {};
+    const writeData = (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        fetch(api, {
+            method: 'POST', 
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(addFormData),
+        })
+        .then(response => response.json())
+        .catch(error => console.log(error));
+    };
+
     return (
         <div>
             <Header />
