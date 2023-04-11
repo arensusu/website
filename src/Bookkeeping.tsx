@@ -3,7 +3,7 @@ import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import Header from "./Header";
 
 const Bookkeeping = () => {
-    const api = "https://192.168.0.16:8000/api/details/";
+    const api = "http://127.0.0.1:8000/api/details/";
 
     const [apiData, setApiData] = useState([]);
     const [searchFormData, setSearchFormData] = useState<{ user: string; startDate: string; endDate: string; category: string[]}>({ user: '', startDate: '', endDate: '', category: []});
@@ -11,18 +11,31 @@ const Bookkeeping = () => {
     const handleSearchFormChange = (event: ChangeEvent<HTMLInputElement>) => {
         const attrName = event.target.name;
         const attrValue = event.target.value;
-        if (attrName == 'search-category') {
+        if (attrName === 'search-category') {
             const isChecked = event.target.checked;
-            const isExisted = searchFormData.category.indexOf(attrValue) != -1;
+            const isExisted = searchFormData.category.indexOf(attrValue) !== -1;
             if (isChecked && !isExisted) {
                 setSearchFormData({ ...searchFormData, category: [...searchFormData.category, attrValue]});
             }
             else if (!isChecked && isExisted) {
-                setSearchFormData({ ...searchFormData, category: searchFormData.category.filter(item => item != attrValue)});
+                setSearchFormData({ ...searchFormData, category: searchFormData.category.filter(item => item !== attrValue)});
             }
         } else {
             setSearchFormData({...searchFormData, [attrName]: attrValue});
         }
+    };
+
+    const printDetails = (data: any[]) => {
+        return data.map(item => {
+            return (
+                <tr>
+                    <td>{item.date}</td>
+                    <td>{item.category.name}</td>
+                    <td>{item.cost}</td>
+                    <td>{item.user.name}</td>
+                </tr>
+            )
+        })
     };
 
     useEffect(() => {
@@ -33,9 +46,16 @@ const Bookkeeping = () => {
         event.preventDefault();
         const { category, ...others} = searchFormData;
         const queryApi = `${api}?${new URLSearchParams(others).toString()}`;
+        console.log(queryApi);
         fetch(queryApi)
         .then(response => response.json())
-        .then(data => setApiData(data.filter((item: any) => category.includes(item.category.name))))
+        .then(data => {
+            if (category.length !== 0) {
+                setApiData(data.filter((item: any) => category.includes(item.category.name)));
+            } else {
+                setApiData(data);
+            }
+        });
         setSearchFormData({ user: '', startDate: '', endDate: '', category: []});
     };
 
@@ -78,17 +98,19 @@ const Bookkeeping = () => {
                 <hr/>
                 <div className='detail'>
                     <h2>Details</h2>
-                    <div>
-                        {apiData.map(data => {
-                            return (
+                    <table>
+                        <thead>
                             <tr>
-                                <td>date</td>
-                                <td>category</td>
-                                <td>cost</td>
+                                <th>Spending Date</th>
+                                <th>Category</th>
+                                <th>Cost</th>
+                                <th>User</th>
                             </tr>
-                            );
-                        })}
-                    </div>
+                        </thead>
+                        <tbody>
+                            {printDetails(apiData)}
+                        </tbody>
+                    </table>
                 </div>
             </main>
         </div>
