@@ -8,6 +8,7 @@ const Bookkeeping = () => {
     const [apiData, setApiData] = useState([]);
     const [searchFormData, setSearchFormData] = useState<{ user: string; startDate: string; endDate: string; category: string[]}>({ user: '', startDate: '', endDate: '', category: []});
     const [addFormData, setAddFormData] = useState<{ user: string; date: string; category: string; cost: string}>({ user: '', date: '', category: '', cost: ''});
+    const [category, setCategory] = useState([])
 
     const handleSearchFormChange = (event: ChangeEvent<HTMLInputElement>) => {
         const attrName = event.target.name;
@@ -29,7 +30,7 @@ const Bookkeeping = () => {
     const printDetails = (data: any[]) => {
         return data.map(item => {
             return (
-                <tr>
+                <tr key={item.id}>
                     <td>{item.date}</td>
                     <td>{item.category.name}</td>
                     <td>{item.cost}</td>
@@ -40,8 +41,11 @@ const Bookkeeping = () => {
     };
 
     useEffect(() => {
-        console.log(searchFormData);
-    }, [searchFormData]);
+        const categoryApi = 'http://127.0.0.1:8000/api/categories/';
+        fetch(categoryApi)
+        .then(response => response.json())
+        .then(data => setCategory(data))
+    }, []);
 
     const readData = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -70,6 +74,16 @@ const Bookkeeping = () => {
         .catch(error => console.log(error));
     };
 
+    const getCategory = (data: any[]) => {
+        return data.map(item => {
+            return (
+                <label htmlFor={`search-${item.id}`} key={item.id}>
+                    <input type='checkbox' name='search-category' id={`search-${item.id}`} value={item.name} checked={searchFormData.category.includes(item.name)} onChange={handleSearchFormChange} />{item.name}
+                </label>
+            )
+        })
+    }
+
     return (
         <div>
             <Header />
@@ -85,9 +99,7 @@ const Bookkeeping = () => {
                         <input type='date' id='search-end-date' name='endDate' value={searchFormData.endDate} onChange={handleSearchFormChange} />
                         <div>
                             <span>Category: </span>
-                            <label htmlFor='search-all'>
-                                <input type='checkbox' name='search-category' id='search-test' value='test' onChange={handleSearchFormChange} />test
-                            </label>
+                            {getCategory(category)}
                         </div>
                         <input type='submit' value='Search' />
                     </form>
