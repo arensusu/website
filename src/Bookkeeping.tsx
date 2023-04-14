@@ -2,8 +2,9 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import Header from "./Header";
 
+const BASE_API = "http://182.233.181.107/api"
+
 const Bookkeeping = () => {
-    const api = "http://127.0.0.1:8000/api/details/";
 
     const [apiData, setApiData] = useState([]);
     const [searchFormData, setSearchFormData] = useState<{ user: string; startDate: string; endDate: string; category: string[]}>({ user: '', startDate: '', endDate: '', category: []});
@@ -41,8 +42,7 @@ const Bookkeeping = () => {
     };
 
     useEffect(() => {
-        const categoryApi = 'http://127.0.0.1:8000/api/categories/';
-        fetch(categoryApi)
+        fetch(`${BASE_API}/categories`)
         .then(response => response.json())
         .then(data => setCategory(data))
     }, []);
@@ -50,7 +50,7 @@ const Bookkeeping = () => {
     const readData = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const { category, ...others} = searchFormData;
-        const queryApi = `${api}?${new URLSearchParams(others).toString()}`;
+        const queryApi = `${BASE_API}/details?${new URLSearchParams(others).toString()}`;
         fetch(queryApi)
         .then(response => response.json())
         .then(data => {
@@ -65,7 +65,7 @@ const Bookkeeping = () => {
 
     const writeData = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        fetch(api, {
+        fetch(`${BASE_API}/details`, {
             method: 'POST', 
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(addFormData),
