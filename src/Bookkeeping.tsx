@@ -2,7 +2,7 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import Header from "./Header";
 
-const BASE_API = "http://182.233.181.107/api"
+const BASE_API = "https://192.168.0.16:8000/api"
 
 const Bookkeeping = () => {
 
