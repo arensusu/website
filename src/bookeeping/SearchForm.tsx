@@ -1,6 +1,8 @@
 import React, { useReducer } from "react";
 import { SearchFormState } from "../Bookkeeping";
 
+import "./SearchForm.css";
+
 const INITIAL_STATE: SearchFormState = {
     user: "",
     startDate: "",
@@ -137,7 +139,7 @@ const SearchForm = (props: Prop) => {
                         })
                     }
                 />
-                <div>
+                <div className="category">
                     <span>Category: </span>
                     {toElement(props.categories)}
                 </div>
