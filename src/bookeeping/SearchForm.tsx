@@ -1,8 +1,6 @@
 import React, { useReducer } from "react";
 import { SearchFormState } from "../Bookkeeping";
 
-import "./SearchForm.css";
-
 const INITIAL_STATE: SearchFormState = {
     user: "",
     startDate: "",
