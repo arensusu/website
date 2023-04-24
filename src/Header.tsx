@@ -13,13 +13,13 @@ export default function Header() {
         </div>
         <ul className="navbar-menu">
           <li>
-            <Link to="/">About Me</Link>
+            <Link to="/about">About Me</Link>
           </li>
           <li>
-            <Link to="/Timer">Timer</Link>
+            <Link to="/timer">Timer</Link>
           </li>
           <li>
-            <Link to="/Bookkeeping">Bookkeeping</Link>
+            <Link to="/bookkeeping">Bookkeeping</Link>
           </li>
           <li>
             <Link to="/">Web3</Link>

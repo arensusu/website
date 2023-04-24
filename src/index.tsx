@@ -5,6 +5,7 @@ import './index.css';
 import Home from './Home';
 import Timer from './Timer';
 import Bookkeeping from './Bookkeeping';
+import AboutMe from './AboutMe';
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
@@ -14,8 +15,9 @@ root.render(
         <HashRouter>
             <Routes>
                 <Route path='/' element={ <Home/> } />
-                <Route path='/Timer' element={ <Timer/> } />
-                <Route path='/Bookkeeping' element={ <Bookkeeping /> } />
+                <Route path="/about" element={ <AboutMe /> } />
+                <Route path='/timer' element={ <Timer/> } />
+                <Route path='/bookkeeping' element={ <Bookkeeping /> } />
             </Routes>
         </HashRouter>
     </React.StrictMode>
