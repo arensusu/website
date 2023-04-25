@@ -60,72 +60,125 @@ const AddForm = (props: Prop) => {
     };
 
     return (
-        <div className="write">
-            <h2>Add a new detail</h2>
-            <form
-                id="add-form"
-                onSubmit={(event) => {
-                    event.preventDefault();
-                    props.add(state);
-                    dispatch({ type: ACTION_TYPE.RESET });
-                }}
-            >
-                <label htmlFor="add-username">Username: </label>
-                <input
-                    type="text"
-                    id="add-username"
-                    name="user"
-                    value={state.user}
-                    onChange={(event) =>
-                        dispatch({
-                            type: ACTION_TYPE.USER,
-                            payload: event.target.value,
-                        })
-                    }
-                />
-                <label htmlFor="add-category">Category: </label>
-                <select
-                    name="add-category"
-                    id="add-category"
-                    value={state.category}
-                    onChange={(event) =>
-                        dispatch({
-                            type: ACTION_TYPE.CATEGORY,
-                            payload: event.target.value,
-                        })
-                    }
-                >
-                    <option value="">Please select</option>
-                    {addCategory(props.categories)}
-                </select>
-                <label htmlFor="add-date">Date: </label>
-                <input
-                    type="date"
-                    id="add-date"
-                    name="date"
-                    value={state.date}
-                    onChange={(event) =>
-                        dispatch({
-                            type: ACTION_TYPE.DATE,
-                            payload: event.target.value,
-                        })
-                    }
-                />
-                <label htmlFor="add-cost">Cost: </label>
-                <input
-                    type="text"
-                    id="add-cost"
-                    name="cost"
-                    value={state.cost}
-                    onChange={(event) =>
-                        dispatch({
-                            type: ACTION_TYPE.COST,
-                            payload: event.target.value,
-                        })
-                    }
-                />
-                <input type="submit" value="Add" />
-            </form>
+        <div className="container">
+            <div className="row justify-content-center">
+                <div className="col">
+                    <h2 className="h2">Add a new detail</h2>
+                    <form
+                        id="add-form"
+                        onSubmit={(event) => {
+                            event.preventDefault();
+                            props.add(state);
+                            dispatch({ type: ACTION_TYPE.RESET });
+                        }}
+                    >
+                        <div className="row mb-3">
+                            <label
+                                htmlFor="add-username"
+                                className="col-sm-2 col-form-label"
+                            >
+                                Username
+                            </label>
+                            <div className="col-sm-10">
+                                <input
+                                    type="text"
+                                    id="add-username"
+                                    name="user"
+                                    value={state.user}
+                                    onChange={(event) =>
+                                        dispatch({
+                                            type: ACTION_TYPE.USER,
+                                            payload: event.target.value,
+                                        })
+                                    }
+                                    className="form-control"
+                                />
+                            </div>
+                        </div>
+                        <div className="row mb-3">
+                            <label
+                                htmlFor="add-category"
+                                className="col-sm-2 col-form-label"
+                            >
+                                Category
+                            </label>
+                            <div className="col-sm-10">
+                                <select
+                                    name="add-category"
+                                    id="add-category"
+                                    value={state.category}
+                                    onChange={(event) =>
+                                        dispatch({
+                                            type: ACTION_TYPE.CATEGORY,
+                                            payload: event.target.value,
+                                        })
+                                    }
+                                    className="form-select"
+                                >
+                                    <option value="">Select a category</option>
+                                    {addCategory(props.categories)}
+                                </select>
+                            </div>
+                        </div>
+                        <div className="row mb-3">
+                            <label
+                                htmlFor="add-date"
+                                className="col-sm-2 col-form-label"
+                            >
+                                Date
+                            </label>
+                            <div className="col-sm-10">
+                                <input
+                                    type="date"
+                                    id="add-date"
+                                    name="date"
+                                    value={state.date}
+                                    onChange={(event) =>
+                                        dispatch({
+                                            type: ACTION_TYPE.DATE,
+                                            payload: event.target.value,
+                                        })
+                                    }
+                                    className="form-control"
+                                />
+                            </div>
+                        </div>
+                        <div className="row mb-3">
+                            <label
+                                htmlFor="add-cost"
+                                className="col-sm-2 col-form-label"
+                            >
+                                Cost
+                            </label>
+                            <div className="col-sm-10">
+                                <input
+                                    type="number"
+                                    id="add-cost"
+                                    name="cost"
+                                    value={state.cost}
+                                    onChange={(event) =>
+                                        dispatch({
+                                            type: ACTION_TYPE.COST,
+                                            payload: event.target.value,
+                                        })
+                                    }
+                                    className="form-control"
+                                />
+                            </div>
+                        </div>
+                        <div className="row mb-3">
+                            <div className="col-sm-10 offset-sm-2">
+                                <button
+                                    type="submit"
+                                    className="btn btn-primary"
+                                >
+                                    Add
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     );
 };

@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { Route, HashRouter, Routes } from 'react-router-dom';
-import './index.css';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from './Home';
 import Timer from './Timer';
 import Bookkeeping from './Bookkeeping';
@@ -12,13 +11,13 @@ const root = ReactDOM.createRoot(
 );
 root.render(
     <React.StrictMode>
-        <HashRouter>
+        <BrowserRouter>
             <Routes>
-                <Route path='/' element={ <Home/> } />
-                <Route path="/about" element={ <AboutMe /> } />
-                <Route path='/timer' element={ <Timer/> } />
-                <Route path='/bookkeeping' element={ <Bookkeeping /> } />
+                <Route path="/" element={<Home />} />
+                <Route path="/timer" element={<Timer />} />
+                <Route path="/bookkeeping" element={<Bookkeeping />} />
+                <Route path="/about" element={<AboutMe />} />
             </Routes>
-        </HashRouter>
+        </BrowserRouter>
     </React.StrictMode>
 );

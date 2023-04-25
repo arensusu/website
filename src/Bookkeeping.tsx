@@ -33,7 +33,41 @@ const Bookkeeping = () => {
     const printDetails = (data: DetailInfo[]) => {
         if (data.length) {
             return (
-                <div className="detail">
+                <div className="container">
+                    <div className="row">
+                        <div className="col">
+                            <h2 className="h2">Details</h2>
+                            <table className="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Spending Date</th>
+                                        <th>Category</th>
+                                        <th>Cost</th>
+                                        <th>User</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {data.map((item) => {
+                                        return (
+                                            <tr key={item.id}>
+                                                <td>{item.date}</td>
+                                                <td>{item.category.name}</td>
+                                                <td>{item.cost}</td>
+                                                <td>{item.user.name}</td>
+                                            </tr>
+                                        );
+                                    })}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+    };
+
+    /*
+    <div className="detail">
                     <h2>Details</h2>
                     <table>
                         <thead>
@@ -58,9 +92,7 @@ const Bookkeeping = () => {
                         </tbody>
                     </table>
                 </div>
-            );
-        }
-    };
+    */
 
     useEffect(() => {
         fetch(`${BASE_API}/categories`)
@@ -106,9 +138,29 @@ const Bookkeeping = () => {
 
     const printApiResult = () => {
         if (apiStatus === 201) {
-            return (<p>Add Successfully</p>);
+            return (
+                <div className="container">
+                    <div className="row">
+                        <div className="col-12">
+                            <div className="alert alert-success" role="alert">
+                                Add Successfully
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
         } else if (apiStatus === 400) {
-            return (<p>Bad Request</p>)
+            return (
+                <div className="container">
+                    <div className="row">
+                        <div className="col-12">
+                            <div className="alert alert-danger" role="alert">
+                                Bad Request
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
         }
     }
 
@@ -116,12 +168,22 @@ const Bookkeeping = () => {
         <div>
             <Header />
             <main className="bookkeeping">
-                <SearchForm search={searchDetail} categories={category} />
-                <hr />
-                <AddForm add={addDetail} categories={category} />
-                <hr />
-                {printDetails(detail)}
-                {printApiResult()}
+                <div className="container">
+                    <div className="row">
+                        <div className="col-12">
+                            <SearchForm search={searchDetail} categories={category} />
+                        </div>
+                    </div>
+                    <hr className="hr" />
+                    <div className="row">
+                        <div className="col-12">
+                            <AddForm add={addDetail} categories={category} />
+                        </div>
+                    </div>
+                    <hr className="hr" />
+                    {printDetails(detail)}
+                    {printApiResult()}
+                </div>
             </main>
         </div>
     );

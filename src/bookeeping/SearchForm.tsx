@@ -86,7 +86,10 @@ const SearchForm = (props: Prop) => {
                             />
                         </div>
                         <div className="col-auto">
-                            <label htmlFor={`search-${item.id}`} className="form-check-label">
+                            <label
+                                htmlFor={`search-${item.id}`}
+                                className="form-check-label"
+                            >
                                 {item.name}
                             </label>
                         </div>
@@ -100,7 +103,7 @@ const SearchForm = (props: Prop) => {
         <div className="container">
             <div className="row justify-content-center">
                 <div className="col">
-                    <h2 className="pt-5">Search the details</h2>
+                    <h2 className="h2">Search the details</h2>
                     <form
                         id="search-form"
                         onSubmit={(event) => {
@@ -109,15 +112,13 @@ const SearchForm = (props: Prop) => {
                             dispatch({ type: ACTION_TYPE.RESET });
                         }}
                     >
-                        <div className="row justify-content-center pt-3">
-                            <div className="col-2">
-                                <label
-                                    htmlFor="search-username"
-                                    className="form-label"
-                                >
-                                    Username:{" "}
-                                </label>
-                            </div>
+                        <div className="row mb-3">
+                            <label
+                                htmlFor="search-username"
+                                className="col-sm-2 col-form-label"
+                            >
+                                Username
+                            </label>
                             <div className="col">
                                 <input
                                     type="text"
@@ -134,15 +135,13 @@ const SearchForm = (props: Prop) => {
                                 />
                             </div>
                         </div>
-                        <div className="row justify-content-center pt-2">
-                            <div className="col-2">
-                                <label
-                                    htmlFor="search-start-date"
-                                    className="form-label"
-                                >
-                                    Start Date:{" "}
-                                </label>
-                            </div>
+                        <div className="row mb-3">
+                            <label
+                                htmlFor="search-start-date"
+                                className="col-sm-2 col-form-label"
+                            >
+                                Start Date
+                            </label>
                             <div className="col">
                                 <input
                                     type="date"
@@ -159,15 +158,13 @@ const SearchForm = (props: Prop) => {
                                 />
                             </div>
                         </div>
-                        <div className="row justify-content-center pt-2">
-                            <div className="col-2">
-                                <label
-                                    htmlFor="search-end-date"
-                                    className="form-label"
-                                >
-                                    End Date:{" "}
-                                </label>
-                            </div>
+                        <div className="row mb-3">
+                            <label
+                                htmlFor="search-end-date"
+                                className="col-sm-2 col-form-label"
+                            >
+                                End Date
+                            </label>
                             <div className="col">
                                 <input
                                     type="date"
@@ -184,12 +181,12 @@ const SearchForm = (props: Prop) => {
                                 />
                             </div>
                         </div>
-                        <div className="row pt-2">
+                        <div className="row mb-3">
                             <label
-                                className="form-label col-2"
+                                className="col-sm-2 col-form-label"
                                 htmlFor="search-category"
                             >
-                                Category:{" "}
+                                Category
                             </label>
                             <div className="col" id="search-category">
                                 <div className="row">
@@ -197,13 +194,14 @@ const SearchForm = (props: Prop) => {
                                 </div>
                             </div>
                         </div>
-                        <div className="row pt-2">
-                            <div className="col-auto">
-                                <input
-                                    className="btn btn-primary"
+                        <div className="row mb-3">
+                            <div className="col-sm-10 offset-sm-2">
+                                <button
                                     type="submit"
-                                    value="Search"
-                                />
+                                    className="btn btn-primary"
+                                >
+                                    Search
+                                </button>
                             </div>
                         </div>
                     </form>

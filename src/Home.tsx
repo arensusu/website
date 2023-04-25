@@ -1,11 +1,80 @@
-import React from 'react';
+import React from "react";
 
-import Header from './Header';
-import './Home.css';
+import Header from "./Header";
 
 function Home() {
     return (
-        <div className="Home">
+        <div>
+            <Header />
+            <main>
+                <div className="container text-center">
+                    <section>
+                        <div className="row">
+                            <div className="col">
+                                <div className="row">
+                                    <div className="col">
+                                        <h2>About Me</h2>
+                                    </div>
+                                    <div className="col">
+                                        <p>Introduce Me</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col">
+                                <button className="btn btn-secondary">
+                                    Go To About Me
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+                    <section>
+                        <div className="row">
+                            <div className="col">
+                                <div className="row">
+                                    <div className="col">
+                                        <h2>Skills</h2>
+                                    </div>
+                                    <div className="col">
+                                        <p>Introduce my skills</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col">
+                                <button className="btn btn-secondary">
+                                    Go To Skills
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+                    <section>
+                        <div className="row">
+                            <div className="col">
+                                <div className="row">
+                                    <div className="col">
+                                        <h2>Web3</h2>
+                                    </div>
+                                    <div className="col">
+                                        <p>Introduce the web3 page</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col">
+                                <button className="btn btn-secondary">
+                                    Go To Web3
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </main>
+        </div>
+    );
+}
+
+export default Home;
+
+/*
+<div className="Home">
             <Header/>
             <main>
                 <section>
@@ -31,7 +100,4 @@ function Home() {
                 </section>
             </main>
         </div>
-    );
-}
-
-export default Home;
+*/
