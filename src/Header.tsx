@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function Header() {
+    const [isCollapsed, setIsCollapsed] = useState(false);
     return (
         <div className="container-fluid">
             <div className="row">
-                <div className="col-12">
-                    <nav className="navbar navbar-expand-lg navbar-light bg-light">
+                <div className="col-12 px-0">
+                    <nav className="navbar navbar-expand-md navbar-light bg-light px-5">
                         <Link className="navbar-brand" to="/">
                             <h1 className="logo">My Website</h1>
                         </Link>
@@ -16,13 +17,14 @@ export default function Header() {
                             data-bs-toggle="collapse"
                             data-bs-target="#navbarNav"
                             aria-controls="navbarNav"
-                            aria-expanded="false"
+                            aria-expanded={isCollapsed}
                             aria-label="Toggle navigation"
+                            onClick={() => setIsCollapsed(prevState => !prevState)}
                         >
                             <span className="navbar-toggler-icon"></span>
                         </button>
                         <div
-                            className="collapse navbar-collapse"
+                            className={"collapse navbar-collapse" + (isCollapsed ? " show" : "")}
                             id="navbarNav"
                         >
                             <ul className="navbar-nav">
