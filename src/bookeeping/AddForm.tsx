@@ -52,7 +52,7 @@ const AddForm = (props: Prop) => {
     const addCategory = (categories: CategoryInfo[]) => {
         return categories.map((item) => {
             return (
-                <option value={item.name} key={item.id}>
+                <option value={item.name} key={item.name}>
                     {item.name}
                 </option>
             );
@@ -159,7 +159,7 @@ const AddForm = (props: Prop) => {
                                     onChange={(event) =>
                                         dispatch({
                                             type: ACTION_TYPE.COST,
-                                            payload: event.target.value,
+                                            payload: parseInt(event.target.value),
                                         })
                                     }
                                     className="form-control"

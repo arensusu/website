@@ -64,7 +64,7 @@ const SearchForm = (props: Prop) => {
     const toElement = (categories: CategoryInfo[]) => {
         return categories.map((item) => {
             return (
-                <div key={item.id} className="col-auto">
+                <div key={item.name} className="col-auto">
                     <div className="row gx-2">
                         <div className="col">
                             <input

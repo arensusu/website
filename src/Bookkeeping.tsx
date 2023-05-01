@@ -3,7 +3,7 @@ import Header from "./Header";
 import SearchForm from "./bookeeping/SearchForm";
 import AddForm from "./bookeeping/AddForm";
 
-const BASE_API = "http://182.233.181.107/api";
+const BASE_API = "http://127.0.0.1:8080/api";
 
 export interface SearchFormState {
     user: string;
@@ -19,7 +19,7 @@ export interface AddFormState {
 }
 interface DetailInfo {
     id: number;
-    user: { name: string };
+    user: { username: string };
     category: { name: string };
     date: string;
     cost: number;
@@ -53,7 +53,7 @@ const Bookkeeping = () => {
                                                 <td>{item.date}</td>
                                                 <td>{item.category.name}</td>
                                                 <td>{item.cost}</td>
-                                                <td>{item.user.name}</td>
+                                                <td>{item.user.username}</td>
                                             </tr>
                                         );
                                     })}
@@ -65,34 +65,6 @@ const Bookkeeping = () => {
             );
         }
     };
-
-    /*
-    <div className="detail">
-                    <h2>Details</h2>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Spending Date</th>
-                                <th>Category</th>
-                                <th>Cost</th>
-                                <th>User</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {data.map((item) => {
-                                return (
-                                    <tr key={item.id}>
-                                        <td>{item.date}</td>
-                                        <td>{item.category.name}</td>
-                                        <td>{item.cost}</td>
-                                        <td>{item.user.name}</td>
-                                    </tr>
-                                );
-                            })}
-                        </tbody>
-                    </table>
-                </div>
-    */
 
     useEffect(() => {
         fetch(`${BASE_API}/categories`)
@@ -123,16 +95,11 @@ const Bookkeeping = () => {
 
     const addDetail = (state: AddFormState) => {
         setDetail([]);
-        const body = {
-            user: { name: state.user },
-            category: { name: state.category },
-            cost: state.cost,
-            date: state.date,
-        };
+        console.log(state);
         fetch(`${BASE_API}/details`, {
             method: "post",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(body),
+            body: JSON.stringify(state),
         }).then((response) => setApiStatus(response.status));
     };
 
