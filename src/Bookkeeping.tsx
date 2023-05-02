@@ -1,22 +1,10 @@
 import { useEffect, useState } from "react";
-import Header from "./Header";
-import SearchForm from "./bookeeping/SearchForm";
-import AddForm from "./bookeeping/AddForm";
+import Header from "./component/Header";
+import SearchForm, {SearchFormState} from "./component/bookeeping/SearchForm";
+import AddForm, {AddFormState} from "./component/bookeeping/AddForm";
 
 const BASE_API = "http://127.0.0.1:8080/api";
 
-export interface SearchFormState {
-    user: string;
-    startDate: string;
-    endDate: string;
-    category: string[];
-}
-export interface AddFormState {
-    user: string;
-    category: string;
-    date: string;
-    cost: number;
-}
 interface DetailInfo {
     id: number;
     user: { username: string };

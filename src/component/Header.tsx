@@ -19,12 +19,17 @@ export default function Header() {
                             aria-controls="navbarNav"
                             aria-expanded={isCollapsed}
                             aria-label="Toggle navigation"
-                            onClick={() => setIsCollapsed(prevState => !prevState)}
+                            onClick={() =>
+                                setIsCollapsed((prevState) => !prevState)
+                            }
                         >
                             <span className="navbar-toggler-icon"></span>
                         </button>
                         <div
-                            className={"collapse navbar-collapse" + (isCollapsed ? " show" : "")}
+                            className={
+                                "collapse navbar-collapse justify-content-between" +
+                                (isCollapsed ? " show" : "")
+                            }
                             id="navbarNav"
                         >
                             <ul className="navbar-nav">
@@ -52,6 +57,14 @@ export default function Header() {
                                     </Link>
                                 </li>
                             </ul>
+                            <div className="d-flex">
+                                <button className="btn btn-primary">
+                                    Register
+                                </button>
+                                <button className="btn btn-outline-primary">
+                                    Login
+                                </button>
+                            </div>
                         </div>
                     </nav>
                 </div>

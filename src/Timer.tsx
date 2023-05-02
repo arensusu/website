@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect, useRef } from "react";
-import Header from "./Header";
+import Header from "./component/Header";
 
 const METHOD = {
     "52/17": [52 * 60, 17 * 60],

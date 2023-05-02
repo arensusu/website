@@ -1,5 +1,11 @@
 import React, { useReducer } from "react";
-import { AddFormState } from "../Bookkeeping";
+
+export interface AddFormState {
+    user: string;
+    category: string;
+    date: string;
+    cost: number;
+}
 
 const INITIAL_STATE: AddFormState = {
     user: "",

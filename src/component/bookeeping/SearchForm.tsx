@@ -1,5 +1,11 @@
 import React, { useReducer } from "react";
-import { SearchFormState } from "../Bookkeeping";
+
+export interface SearchFormState {
+    user: string;
+    startDate: string;
+    endDate: string;
+    category: string[];
+}
 
 const INITIAL_STATE: SearchFormState = {
     user: "",
