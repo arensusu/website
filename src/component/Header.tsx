@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 export default function Header() {
     const [isCollapsed, setIsCollapsed] = useState(false);
+
     return (
         <div className="container-fluid">
             <div className="row">
@@ -57,14 +58,6 @@ export default function Header() {
                                     </Link>
                                 </li>
                             </ul>
-                            <div className="d-flex">
-                                <button className="btn btn-primary">
-                                    Register
-                                </button>
-                                <button className="btn btn-outline-primary">
-                                    Login
-                                </button>
-                            </div>
                         </div>
                     </nav>
                 </div>

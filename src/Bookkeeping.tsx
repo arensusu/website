@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Header from "./component/Header";
-import SearchForm, {SearchFormState} from "./component/bookeeping/SearchForm";
-import AddForm, {AddFormState} from "./component/bookeeping/AddForm";
+import SearchForm, { SearchFormState } from "./component/bookeeping/SearchForm";
+import AddForm, { AddFormState } from "./component/bookeeping/AddForm";
 
 const BASE_API = "http://127.0.0.1:8080/api";
 
@@ -17,6 +17,39 @@ const Bookkeeping = () => {
     const [detail, setDetail] = useState<DetailInfo[]>([]);
     const [category, setCategory] = useState([]);
     const [apiStatus, setApiStatus] = useState<number>(0);
+
+    const userAction = () => {
+        if (localStorage.getItem("jwt") !== null) {
+            return (
+                <div>
+                    <p>123</p>
+                    <button
+                        className="btn btn-danger"
+                        onClick={() => {
+                            localStorage.removeItem("jwt");
+                        }}
+                    >
+                        Logout
+                    </button>
+                </div>
+            );
+        } else {
+            return (
+                <div>
+                    <button
+                        className="btn btn-outline-primary"
+                    >
+                        Login
+                    </button>
+                    <button
+                        className="btn btn-primary"
+                    >
+                        Register
+                    </button>
+                </div>
+            );
+        }
+    };
 
     const printDetails = (data: DetailInfo[]) => {
         if (data.length) {
@@ -117,16 +150,22 @@ const Bookkeeping = () => {
                 </div>
             );
         }
-    }
+    };
 
     return (
         <div>
             <Header />
             <main className="bookkeeping">
                 <div className="container">
+                    <div className="row justify-content-end">
+                        <div className="col-auto">{userAction()}</div>
+                    </div>
                     <div className="row">
                         <div className="col-12">
-                            <SearchForm search={searchDetail} categories={category} />
+                            <SearchForm
+                                search={searchDetail}
+                                categories={category}
+                            />
                         </div>
                     </div>
                     <hr className="hr" />
