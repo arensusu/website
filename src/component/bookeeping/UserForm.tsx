@@ -15,6 +15,7 @@ const UserForm = (props: Props) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [forceUpdate, setForceUpdate] = useState(0);
 
     useEffect(() => {
         const modal = document.getElementById("popup");
@@ -140,7 +141,7 @@ const UserForm = (props: Props) => {
                             <div className="container-fluid">
                                 <div className="row">
                                     <div className="col">
-                                        <form>
+                                        <form onSubmit={handleSubmit}>
                                             <div className="row mb-3">
                                                 <div className="col-5">
                                                     <label
@@ -228,6 +229,7 @@ const UserForm = (props: Props) => {
                         className="btn btn-danger"
                         onClick={() => {
                             localStorage.removeItem("jwt");
+                            setForceUpdate(forceUpdate + 1);
                         }}
                     >
                         Logout

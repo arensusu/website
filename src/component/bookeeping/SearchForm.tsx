@@ -76,7 +76,7 @@ const SearchForm = (props: Prop) => {
                             <input
                                 type="checkbox"
                                 name="search-category"
-                                id={`search-${item.id}`}
+                                id={`search-${item.name}`}
                                 value={item.name}
                                 checked={state.category.includes(item.name)}
                                 onChange={(event) =>
@@ -93,7 +93,7 @@ const SearchForm = (props: Prop) => {
                         </div>
                         <div className="col-auto">
                             <label
-                                htmlFor={`search-${item.id}`}
+                                htmlFor={`search-${item.name}`}
                                 className="form-check-label"
                             >
                                 {item.name}
