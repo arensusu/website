@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Header from "./component/Header";
 import SearchForm, { SearchFormState } from "./component/bookeeping/SearchForm";
 import AddForm, { AddFormState } from "./component/bookeeping/AddForm";
+import UserForm, { UserFormState } from "./component/bookeeping/UserForm";
 
 const BASE_API = "http://127.0.0.1:8080/api";
 
@@ -17,219 +18,6 @@ const Bookkeeping = () => {
     const [detail, setDetail] = useState<DetailInfo[]>([]);
     const [category, setCategory] = useState([]);
     const [apiStatus, setApiStatus] = useState<number>(0);
-    const [popupType, setPopupType] = useState<string>("close");
-
-    const popupPage = (type: string) => {
-        switch (type) {
-            case "login":
-                return (
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h5 className="modal-title">Login</h5>
-                            <button
-                                type="button"
-                                className="btn-close"
-                                data-bs-dismiss="modal"
-                                aria-label="Close"
-                                onClick={() => setPopupType("close")}
-                            />
-                        </div>
-                        <div className="modal-body">
-                            <div className="container-fluid">
-                                <div className="row">
-                                    <div className="col">
-                                        <form>
-                                            <div className="row mb-3">
-                                                <div className="col-3">
-                                                    <label
-                                                        htmlFor="username"
-                                                        className="col-form-label"
-                                                    >
-                                                        Username
-                                                    </label>
-                                                </div>
-                                                <div className="col">
-                                                    <input
-                                                        type="text"
-                                                        className="form-control"
-                                                        id="username"
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="row mb-3">
-                                                <div className="col-3">
-                                                    <label
-                                                        htmlFor="password"
-                                                        className="col-form-label"
-                                                    >
-                                                        Password
-                                                    </label>
-                                                </div>
-                                                <div className="col">
-                                                    <input
-                                                        type="password"
-                                                        className="form-control"
-                                                        id="password"
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="row">
-                                                <div className="col text-end">
-                                                    <button
-                                                        type="submit"
-                                                        className="btn btn-primary"
-                                                    >
-                                                        Login
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                );
-            case "register":
-                return (
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h5 className="modal-title">Register</h5>
-                            <button
-                                type="button"
-                                className="btn-close"
-                                data-bs-dismiss="modal"
-                                aria-label="Close"
-                                onClick={() => setPopupType("close")}
-                            />
-                        </div>
-                        <div className="modal-body">
-                        <div className="container-fluid">
-                                <div className="row">
-                                    <div className="col">
-                                        <form>
-                                            <div className="row mb-3">
-                                                <div className="col-5">
-                                                    <label
-                                                        htmlFor="username"
-                                                        className="col-form-label"
-                                                    >
-                                                        Username
-                                                    </label>
-                                                </div>
-                                                <div className="col">
-                                                    <input
-                                                        type="text"
-                                                        className="form-control"
-                                                        id="username"
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="row mb-3">
-                                                <div className="col-5">
-                                                    <label
-                                                        htmlFor="password"
-                                                        className="col-form-label"
-                                                    >
-                                                        Password
-                                                    </label>
-                                                </div>
-                                                <div className="col">
-                                                    <input
-                                                        type="password"
-                                                        className="form-control"
-                                                        id="password"
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="row mb-3">
-                                                <div className="col-5">
-                                                    <label
-                                                        htmlFor="password"
-                                                        className="col-form-label"
-                                                    >
-                                                        Confirm Password
-                                                    </label>
-                                                </div>
-                                                <div className="col">
-                                                    <input
-                                                        type="password"
-                                                        className="form-control"
-                                                        id="password"
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="row">
-                                                <div className="col text-end">
-                                                    <button
-                                                        type="submit"
-                                                        className="btn btn-primary"
-                                                    >
-                                                        Register
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                );
-            case "close":
-                return <div className="modal-content"></div>;
-            default:
-                return undefined;
-        }
-    };
-
-    useEffect(() => {
-        const modal = document.getElementById("popup");
-        if (modal === null) return;
-
-        if (popupType === "close") {
-            modal.style.display = "none";
-            modal.className = "modal fade";
-        } else {
-            modal.style.display = "block";
-            modal.className = "modal fade show";
-        }
-    }, [popupType]);
-
-    const userAction = () => {
-        if (localStorage.getItem("jwt") !== null) {
-            return (
-                <div>
-                    <p>123</p>
-                    <button
-                        className="btn btn-danger"
-                        onClick={() => {
-                            localStorage.removeItem("jwt");
-                        }}
-                    >
-                        Logout
-                    </button>
-                </div>
-            );
-        } else {
-            return (
-                <div>
-                    <button
-                        className="btn btn-outline-primary"
-                        onClick={() => setPopupType("login")}
-                    >
-                        Login
-                    </button>
-                    <button
-                        className="btn btn-primary"
-                        onClick={() => setPopupType("register")}
-                    >
-                        Register
-                    </button>
-                </div>
-            );
-        }
-    };
 
     const printDetails = (data: DetailInfo[]) => {
         if (data.length) {
@@ -304,6 +92,28 @@ const Bookkeeping = () => {
         }).then((response) => setApiStatus(response.status));
     };
 
+    const userFormAction = async (type: string, state: UserFormState) => {
+        let api: string;
+        if (type === "login") {
+            api = `${BASE_API}/login`;
+        } else if (type === "register") {
+            api = `${BASE_API}/register`;
+        } else {
+            api = "";
+            console.log("invalid type");
+        }
+
+        const response = await fetch(api, {
+            method: "post",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(state),
+        });
+        if (response.ok) {
+            const data = await response.json();
+            localStorage.setItem("jwt", data.jwt);
+        }
+    }
+
     const printApiResult = () => {
         if (apiStatus === 201) {
             return (
@@ -337,8 +147,8 @@ const Bookkeeping = () => {
             <Header />
             <main className="bookkeeping">
                 <div className="container">
-                    <div className="row justify-content-end">
-                        <div className="col-auto">{userAction()}</div>
+                    <div className="row">
+                        <UserForm action={userFormAction} />
                     </div>
                     <div className="row">
                         <div className="col-12">
@@ -357,11 +167,6 @@ const Bookkeeping = () => {
                     <hr className="hr" />
                     {printDetails(detail)}
                     {printApiResult()}
-                    <div className="modal fade" id="popup">
-                        <div className="modal-dialog modal-dialog-centered modal">
-                            {popupPage(popupType)}
-                        </div>
-                    </div>
                 </div>
             </main>
         </div>
