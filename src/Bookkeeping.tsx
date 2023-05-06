@@ -61,13 +61,15 @@ const Bookkeeping = () => {
             .then((data) => setCategory(data));
     }, []);
 
-    const searchDetail = (state: SearchFormState) => {
+    const getDetailApi = (state: SearchFormState) => {
         setApiStatus(0);
         const { category, ...others } = state;
         const queryApi = `${BASE_API}/details?${new URLSearchParams(
             others
         ).toString()}`;
-        fetch(queryApi)
+
+        const jwtToken = localStorage.getItem("jwt");
+        fetch(queryApi, { headers: { "Authorization": `Bearer ${jwtToken}` }})
             .then((response) => response.json())
             .then((data) => {
                 if (category.length !== 0) {
@@ -82,7 +84,7 @@ const Bookkeeping = () => {
             });
     };
 
-    const addDetail = (state: AddFormState) => {
+    const postDetailApi = (state: AddFormState) => {
         setDetail([]);
         console.log(state);
         fetch(`${BASE_API}/details`, {
@@ -92,7 +94,7 @@ const Bookkeeping = () => {
         }).then((response) => setApiStatus(response.status));
     };
 
-    const userFormAction = async (type: string, state: UserFormState) => {
+    const postUserApi = async (type: string, state: UserFormState) => {
         let api: string;
         if (type === "login") {
             api = `${BASE_API}/login`;
@@ -148,12 +150,12 @@ const Bookkeeping = () => {
             <main className="bookkeeping">
                 <div className="container">
                     <div className="row">
-                        <UserForm action={userFormAction} />
+                        <UserForm action={postUserApi} />
                     </div>
                     <div className="row">
                         <div className="col-12">
                             <SearchForm
-                                search={searchDetail}
+                                search={getDetailApi}
                                 categories={category}
                             />
                         </div>
@@ -161,7 +163,7 @@ const Bookkeeping = () => {
                     <hr className="hr" />
                     <div className="row">
                         <div className="col-12">
-                            <AddForm add={addDetail} categories={category} />
+                            <AddForm add={postDetailApi} categories={category} />
                         </div>
                     </div>
                     <hr className="hr" />
