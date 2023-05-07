@@ -1,21 +1,18 @@
 import React, { useReducer } from "react";
 
 export interface SearchFormState {
-    user: string;
     startDate: string;
     endDate: string;
     category: string[];
 }
 
 const INITIAL_STATE: SearchFormState = {
-    user: "",
     startDate: "",
     endDate: "",
     category: [],
 };
 
 const ACTION_TYPE = {
-    USER: "USER",
     START_DATE: "START_DATE",
     END_DATE: "END_DATE",
     CATEGORY: "CATEGORY",
@@ -38,8 +35,6 @@ interface Prop {
 const SearchForm = (props: Prop) => {
     const reducer = (state: SearchFormState, action: Action) => {
         switch (action.type) {
-            case ACTION_TYPE.USER:
-                return { ...state, user: action.payload };
             case ACTION_TYPE.START_DATE:
                 return { ...state, startDate: action.payload };
             case ACTION_TYPE.END_DATE:
@@ -118,29 +113,6 @@ const SearchForm = (props: Prop) => {
                             dispatch({ type: ACTION_TYPE.RESET });
                         }}
                     >
-                        <div className="row mb-3">
-                            <label
-                                htmlFor="search-username"
-                                className="col-sm-2 col-form-label"
-                            >
-                                Username
-                            </label>
-                            <div className="col">
-                                <input
-                                    type="text"
-                                    id="search-username"
-                                    name="user"
-                                    value={state.user}
-                                    onChange={(event) =>
-                                        dispatch({
-                                            type: ACTION_TYPE.USER,
-                                            payload: event.target.value,
-                                        })
-                                    }
-                                    className="form-control"
-                                />
-                            </div>
-                        </div>
                         <div className="row mb-3">
                             <label
                                 htmlFor="search-start-date"

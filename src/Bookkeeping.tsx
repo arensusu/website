@@ -61,6 +61,14 @@ const Bookkeeping = () => {
             .then((data) => setCategory(data));
     }, []);
 
+    const getJwtToken = () => {
+        const token = localStorage.getItem("jwt");
+        if (token === null) {
+            return "";
+        }
+        return token;
+    }
+
     const getDetailApi = (state: SearchFormState) => {
         setApiStatus(0);
         const { category, ...others } = state;
@@ -68,8 +76,7 @@ const Bookkeeping = () => {
             others
         ).toString()}`;
 
-        const jwtToken = localStorage.getItem("jwt");
-        fetch(queryApi, { headers: { "Authorization": `Bearer ${jwtToken}` }})
+        fetch(queryApi, { headers: { "Authorization": `Bearer ${getJwtToken()}` }})
             .then((response) => response.json())
             .then((data) => {
                 if (category.length !== 0) {
@@ -89,31 +96,43 @@ const Bookkeeping = () => {
         console.log(state);
         fetch(`${BASE_API}/details`, {
             method: "post",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json", "Authorization": `Bearer ${getJwtToken()}` },
             body: JSON.stringify(state),
         }).then((response) => setApiStatus(response.status));
     };
 
-    const postUserApi = async (type: string, state: UserFormState) => {
-        let api: string;
-        if (type === "login") {
-            api = `${BASE_API}/login`;
-        } else if (type === "register") {
-            api = `${BASE_API}/register`;
-        } else {
-            api = "";
-            console.log("invalid type");
-        }
+    const postLoginApi = async (state: UserFormState) => {
+        const api = `${BASE_API}/login`;
 
         const response = await fetch(api, {
             method: "post",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(state),
         });
-        if (response.ok) {
-            const data = await response.json();
-            localStorage.setItem("jwt", data.jwt);
+        if (!response.ok) {
+            return false;
         }
+
+        const data = await response.json();
+        localStorage.setItem("jwt", data.jwt);
+        return true;
+    }
+
+    const postRegisterApi = async (state: UserFormState) => {
+        const api = `${BASE_API}/register`;
+
+        const response = await fetch(api, {
+            method: "post",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(state),
+        });
+        if (!response.ok) {
+            return false;
+        }
+
+        const data = await response.json();
+        localStorage.setItem("jwt", data.jwt);
+        return true;
     }
 
     const printApiResult = () => {
@@ -150,7 +169,9 @@ const Bookkeeping = () => {
             <main className="bookkeeping">
                 <div className="container">
                     <div className="row">
-                        <UserForm action={postUserApi} />
+                        <div className="col">
+                            <UserForm login={postLoginApi} register={postRegisterApi} />
+                        </div>
                     </div>
                     <div className="row">
                         <div className="col-12">

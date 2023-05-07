@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 export interface UserFormState {
     username: string;
     password: string;
-    confirmPassword?: string;
 }
 
 interface Props {
-    action(type: string, state: UserFormState): Promise<void>;
+    login(state: UserFormState): Promise<boolean>;
+    register(state: UserFormState): Promise<boolean>;
 }
 
 const UserForm = (props: Props) => {
@@ -16,6 +16,8 @@ const UserForm = (props: Props) => {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [forceUpdate, setForceUpdate] = useState(0);
+
+    const user = useRef("");
 
     useEffect(() => {
         const modal = document.getElementById("popup");
@@ -30,24 +32,46 @@ const UserForm = (props: Props) => {
         }
     }, [popupType]);
 
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    useEffect(() => {
+        if (popupType === "register") {
+            const input = document.getElementById("confirm-password");
+            if (password !== confirmPassword) {
+                input?.classList.add("is-invalid");
+            } else {
+                input?.classList.remove("is-invalid");
+            }
+        }
+    }, [password, confirmPassword]);
+
+    const handleLoginSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        let state: UserFormState;
-        if (popupType === "login") {
-            state = {
-                username,
-                password,
-            }
-        } else if (popupType === "register") {
-            state = {
-                username,
-                password,
-                confirmPassword,
-            }
-        } else {
+        const state = {
+            username,
+            password,
+        }
+        if (!await props.login(state)) {
+
             return;
         }
-        await props.action(popupType, state);
+        user.current = username;
+        setPopupType("close");
+    }
+
+    const handleRegisterSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        if (password !== confirmPassword) {
+            return;
+        }
+
+        const state = {
+            username,
+            password,
+        }
+        if (!await props.register(state)) {
+
+            return;
+        }
+        user.current = username;
         setPopupType("close");
     }
 
@@ -70,7 +94,7 @@ const UserForm = (props: Props) => {
                             <div className="container-fluid">
                                 <div className="row">
                                     <div className="col">
-                                        <form onSubmit={handleSubmit}>
+                                        <form onSubmit={handleLoginSubmit}>
                                             <div className="row mb-3">
                                                 <div className="col-3">
                                                     <label
@@ -85,7 +109,7 @@ const UserForm = (props: Props) => {
                                                         type="text"
                                                         className="form-control"
                                                         id="username"
-                                                        onChange={(event) => {setUsername(event.target.value)}}
+                                                        onChange={(event) => { setUsername(event.target.value) }}
                                                     />
                                                 </div>
                                             </div>
@@ -103,12 +127,15 @@ const UserForm = (props: Props) => {
                                                         type="password"
                                                         className="form-control"
                                                         id="password"
-                                                        onChange={(event) => {setPassword(event.target.value)}}
+                                                        onChange={(event) => { setPassword(event.target.value) }}
                                                     />
                                                 </div>
                                             </div>
-                                            <div className="row">
-                                                <div className="col text-end">
+                                            <div className="row justify-content-end">
+                                                <div className="col text-danger d-none" id="submit-info">
+                                                    Username or password is wrong.
+                                                </div>
+                                                <div className="col-auto">
                                                     <button
                                                         type="submit"
                                                         className="btn btn-primary"
@@ -141,7 +168,7 @@ const UserForm = (props: Props) => {
                             <div className="container-fluid">
                                 <div className="row">
                                     <div className="col">
-                                        <form onSubmit={handleSubmit}>
+                                        <form onSubmit={handleRegisterSubmit}>
                                             <div className="row mb-3">
                                                 <div className="col-5">
                                                     <label
@@ -156,7 +183,7 @@ const UserForm = (props: Props) => {
                                                         type="text"
                                                         className="form-control"
                                                         id="username"
-                                                        onChange={(event) => {setUsername(event.target.value)}}
+                                                        onChange={(event) => { setUsername(event.target.value) }}
                                                     />
                                                 </div>
                                             </div>
@@ -174,7 +201,7 @@ const UserForm = (props: Props) => {
                                                         type="password"
                                                         className="form-control"
                                                         id="password"
-                                                        onChange={(event) => {setPassword(event.target.value)}}
+                                                        onChange={(event) => { setPassword(event.target.value) }}
                                                     />
                                                 </div>
                                             </div>
@@ -192,15 +219,20 @@ const UserForm = (props: Props) => {
                                                         type="password"
                                                         className="form-control"
                                                         id="confirm-password"
-                                                        onChange={(event) => {setConfirmPassword(event.target.value)}}
+                                                        onChange={(event) => { setConfirmPassword(event.target.value) }}
                                                     />
+                                                    <div className="invalid-feedback">Confirm password is wrong.</div>
                                                 </div>
                                             </div>
-                                            <div className="row">
-                                                <div className="col text-end">
+                                            <div className="row justify-content-end">
+                                                <div className="col text-danger d-none" id="submit-info">
+                                                    User is existed.
+                                                </div>
+                                                <div className="col-auto">
                                                     <button
                                                         type="submit"
                                                         className="btn btn-primary"
+                                                        id="submit"
                                                     >
                                                         Register
                                                     </button>
@@ -223,8 +255,11 @@ const UserForm = (props: Props) => {
     const userAction = () => {
         if (localStorage.getItem("jwt") !== null) {
             return (
-                <div>
+                <div className="row justify-content-end">
+                    <div className="col-auto">
                     <p>123</p>
+                    </div>
+                    <div className="col-auto">
                     <button
                         className="btn btn-danger"
                         onClick={() => {
@@ -234,23 +269,28 @@ const UserForm = (props: Props) => {
                     >
                         Logout
                     </button>
+                    </div>
                 </div>
             );
         } else {
             return (
-                <div>
+                <div className="row justify-content-end">
+                    <div className="col-auto">
                     <button
                         className="btn btn-outline-primary"
                         onClick={() => setPopupType("login")}
                     >
                         Login
                     </button>
+                    </div>
+                    <div className="col-auto">
                     <button
                         className="btn btn-primary"
                         onClick={() => setPopupType("register")}
                     >
                         Register
                     </button>
+                    </div>
                 </div>
             );
         }
@@ -258,9 +298,7 @@ const UserForm = (props: Props) => {
 
     return (
         <div className="container-fluid">
-            <div className="row justify-content-end">
-                <div className="col-auto">{userAction()}</div>
-            </div>
+            {userAction()}
             <div className="row">
                 <div className="modal fade" id="popup">
                     <div className="modal-dialog modal-dialog-centered modal">

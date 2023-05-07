@@ -1,21 +1,18 @@
 import React, { useReducer } from "react";
 
 export interface AddFormState {
-    user: string;
     category: string;
     date: string;
     cost: number;
 }
 
 const INITIAL_STATE: AddFormState = {
-    user: "",
     category: "",
     date: "",
     cost: 0,
 };
 
 const ACTION_TYPE = {
-    USER: "USER",
     CATEGORY: "CATEGORY",
     DATE: "DATE",
     COST: "COST",
@@ -38,8 +35,6 @@ interface Prop {
 const AddForm = (props: Prop) => {
     const reducer = (state: AddFormState, action: Action) => {
         switch (action.type) {
-            case ACTION_TYPE.USER:
-                return { ...state, user: action.payload };
             case ACTION_TYPE.CATEGORY:
                 return { ...state, category: action.payload };
             case ACTION_TYPE.DATE:
@@ -78,29 +73,6 @@ const AddForm = (props: Prop) => {
                             dispatch({ type: ACTION_TYPE.RESET });
                         }}
                     >
-                        <div className="row mb-3">
-                            <label
-                                htmlFor="add-username"
-                                className="col-sm-2 col-form-label"
-                            >
-                                Username
-                            </label>
-                            <div className="col-sm-10">
-                                <input
-                                    type="text"
-                                    id="add-username"
-                                    name="user"
-                                    value={state.user}
-                                    onChange={(event) =>
-                                        dispatch({
-                                            type: ACTION_TYPE.USER,
-                                            payload: event.target.value,
-                                        })
-                                    }
-                                    className="form-control"
-                                />
-                            </div>
-                        </div>
                         <div className="row mb-3">
                             <label
                                 htmlFor="add-category"
