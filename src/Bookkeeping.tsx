@@ -4,7 +4,7 @@ import SearchForm, { SearchFormState } from "./component/bookeeping/SearchForm";
 import AddForm, { AddFormState } from "./component/bookeeping/AddForm";
 import UserForm, { UserFormState } from "./component/bookeeping/UserForm";
 
-const BASE_API = "http://127.0.0.1:8080/api";
+const BASE_API = "http://127.0.0.1:8080";
 
 interface DetailInfo {
     id: number;
@@ -56,7 +56,7 @@ const Bookkeeping = () => {
     };
 
     useEffect(() => {
-        fetch(`${BASE_API}/categories`)
+        fetch(`${BASE_API}/api/categories`)
             .then((response) => response.json())
             .then((data) => setCategory(data));
     }, []);
@@ -64,7 +64,7 @@ const Bookkeeping = () => {
     const getJwtToken = () => {
         const token = localStorage.getItem("jwt");
         if (token === null) {
-            return "";
+            return "nil";
         }
         return token;
     }
@@ -72,7 +72,7 @@ const Bookkeeping = () => {
     const getDetailApi = (state: SearchFormState) => {
         setApiStatus(0);
         const { category, ...others } = state;
-        const queryApi = `${BASE_API}/details?${new URLSearchParams(
+        const queryApi = `${BASE_API}/api/details?${new URLSearchParams(
             others
         ).toString()}`;
 
@@ -94,15 +94,15 @@ const Bookkeeping = () => {
     const postDetailApi = (state: AddFormState) => {
         setDetail([]);
         console.log(state);
-        fetch(`${BASE_API}/details`, {
+        fetch(`${BASE_API}/api/details`, {
             method: "post",
             headers: { "Content-Type": "application/json", "Authorization": `Bearer ${getJwtToken()}` },
-            body: JSON.stringify(state),
+            body: JSON.stringify({...state, cost: parseInt(state.cost)}),
         }).then((response) => setApiStatus(response.status));
     };
 
     const postLoginApi = async (state: UserFormState) => {
-        const api = `${BASE_API}/login`;
+        const api = `${BASE_API}/auth/login`;
 
         const response = await fetch(api, {
             method: "post",
@@ -119,7 +119,7 @@ const Bookkeeping = () => {
     }
 
     const postRegisterApi = async (state: UserFormState) => {
-        const api = `${BASE_API}/register`;
+        const api = `${BASE_API}/auth/register`;
 
         const response = await fetch(api, {
             method: "post",

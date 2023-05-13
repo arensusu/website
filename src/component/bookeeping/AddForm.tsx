@@ -3,13 +3,13 @@ import React, { useReducer } from "react";
 export interface AddFormState {
     category: string;
     date: string;
-    cost: number;
+    cost: string;
 }
 
 const INITIAL_STATE: AddFormState = {
     category: "",
     date: "",
-    cost: 0,
+    cost: "",
 };
 
 const ACTION_TYPE = {
@@ -137,7 +137,7 @@ const AddForm = (props: Prop) => {
                                     onChange={(event) =>
                                         dispatch({
                                             type: ACTION_TYPE.COST,
-                                            payload: parseInt(event.target.value),
+                                            payload: event.target.value,
                                         })
                                     }
                                     className="form-control"

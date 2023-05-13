@@ -257,7 +257,7 @@ const UserForm = (props: Props) => {
             return (
                 <div className="row justify-content-end">
                     <div className="col-auto">
-                    <p>123</p>
+                        <p>{user.current}</p>
                     </div>
                     <div className="col-auto">
                     <button
