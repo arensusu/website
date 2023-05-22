@@ -8,6 +8,7 @@ export interface UserFormState {
 interface Props {
     login(state: UserFormState): Promise<boolean>;
     register(state: UserFormState): Promise<boolean>;
+    verify(): Promise<string>;
 }
 
 const UserForm = (props: Props) => {
@@ -18,6 +19,18 @@ const UserForm = (props: Props) => {
     const [forceUpdate, setForceUpdate] = useState(0);
 
     const user = useRef("");
+
+    useEffect(() => {
+        if (localStorage.getItem("jwt") === null) {
+            user.current = "";
+            return
+        }
+        props.verify().then((username) => {
+            user.current = username;
+            setForceUpdate(forceUpdate + 1);
+        });
+        return;
+    }, [])
 
     useEffect(() => {
         const modal = document.getElementById("popup");

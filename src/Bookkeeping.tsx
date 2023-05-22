@@ -4,7 +4,7 @@ import SearchForm, { SearchFormState } from "./component/bookeeping/SearchForm";
 import AddForm, { AddFormState } from "./component/bookeeping/AddForm";
 import UserForm, { UserFormState } from "./component/bookeeping/UserForm";
 
-const BASE_API = "http://127.0.0.1:8080";
+const BASE_API = "http://192.168.0.16:8080";
 
 interface DetailInfo {
     id: number;
@@ -64,9 +64,23 @@ const Bookkeeping = () => {
     const getJwtToken = () => {
         const token = localStorage.getItem("jwt");
         if (token === null) {
-            return "nil";
+            return "null";
         }
         return token;
+    }
+
+    const getUserApi = async () => {
+        const api = `${BASE_API}/auth/user`;
+        
+        const response = await fetch(api, {
+            headers: { "Authorization": `Bearer ${getJwtToken()}` },
+        });
+        if (!response.ok) {
+            localStorage.removeItem("jwt");
+            return;
+        }
+        const data = await response.json();
+        return data["username"];
     }
 
     const getDetailApi = (state: SearchFormState) => {
@@ -93,7 +107,6 @@ const Bookkeeping = () => {
 
     const postDetailApi = (state: AddFormState) => {
         setDetail([]);
-        console.log(state);
         fetch(`${BASE_API}/api/details`, {
             method: "post",
             headers: { "Content-Type": "application/json", "Authorization": `Bearer ${getJwtToken()}` },
@@ -170,7 +183,7 @@ const Bookkeeping = () => {
                 <div className="container">
                     <div className="row">
                         <div className="col">
-                            <UserForm login={postLoginApi} register={postRegisterApi} />
+                            <UserForm login={postLoginApi} register={postRegisterApi} verify={getUserApi} />
                         </div>
                     </div>
                     <div className="row">
