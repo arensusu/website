@@ -1,4 +1,5 @@
 import React, { useReducer } from "react";
+import { currentDate } from "../helper/date";
 
 export interface AddFormState {
     category: string;
@@ -8,7 +9,7 @@ export interface AddFormState {
 
 const INITIAL_STATE: AddFormState = {
     category: "",
-    date: "",
+    date: currentDate(),
     cost: "",
 };
 

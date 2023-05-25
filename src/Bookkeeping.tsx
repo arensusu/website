@@ -8,7 +8,6 @@ const BASE_API = "http://192.168.0.16:8080";
 
 interface DetailInfo {
     id: number;
-    user: { username: string };
     category: { name: string };
     date: string;
     cost: number;
@@ -29,10 +28,9 @@ const Bookkeeping = () => {
                             <table className="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Spending Date</th>
+                                        <th>Date</th>
                                         <th>Category</th>
                                         <th>Cost</th>
-                                        <th>User</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -42,7 +40,6 @@ const Bookkeeping = () => {
                                                 <td>{item.date}</td>
                                                 <td>{item.category.name}</td>
                                                 <td>{item.cost}</td>
-                                                <td>{item.user.username}</td>
                                             </tr>
                                         );
                                     })}

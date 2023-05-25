@@ -114,6 +114,20 @@ const SearchForm = (props: Prop) => {
                         }}
                     >
                         <div className="row mb-3">
+                            <div className="col">
+                                <button className="btn btn-secondary">Today</button>
+                            </div>
+                            <div className="col">
+                                <button className="btn btn-secondary">Last 7 days</button>
+                            </div>
+                            <div className="col">
+                                <button className="btn btn-secondary">Last month</button>
+                            </div>
+                            <div className="col">
+                                <button className="btn btn-secondary">This month</button>
+                            </div>
+                        </div>
+                        <div className="row mb-3">
                             <label
                                 htmlFor="search-start-date"
                                 className="col-sm-2 col-form-label"
