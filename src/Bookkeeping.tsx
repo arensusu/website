@@ -4,7 +4,8 @@ import SearchForm, { SearchFormState } from "./component/bookeeping/SearchForm";
 import AddForm, { AddFormState } from "./component/bookeeping/AddForm";
 import UserForm, { UserFormState } from "./component/bookeeping/UserForm";
 
-const BASE_API = "http://192.168.0.16:8080";
+const BASE_API = "http://182.233.181.107:722"
+// const BASE_API = "http://192.168.0.16:8080";
 
 interface DetailInfo {
     id: number;

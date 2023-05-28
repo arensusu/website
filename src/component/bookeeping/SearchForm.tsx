@@ -1,4 +1,5 @@
 import React, { useReducer } from "react";
+import { currentDate, lastSevenDays, thisMonthStart, thisMonthEnd, lastMonthStart, lastMonthEnd } from "../helper/date";
 
 export interface SearchFormState {
     startDate: string;
@@ -102,7 +103,7 @@ const SearchForm = (props: Prop) => {
 
     return (
         <div className="container">
-            <div className="row justify-content-center">
+            <div className="row">
                 <div className="col">
                     <h2 className="h2">Search the details</h2>
                     <form
@@ -113,18 +114,30 @@ const SearchForm = (props: Prop) => {
                             dispatch({ type: ACTION_TYPE.RESET });
                         }}
                     >
-                        <div className="row mb-3">
+                        <div className="row mb-3 text-center">
                             <div className="col">
-                                <button className="btn btn-secondary">Today</button>
+                                <button type="button" className="btn btn-secondary" onClick={() => {
+                                    dispatch({ type: ACTION_TYPE.START_DATE, payload: currentDate() }) 
+                                    dispatch({ type: ACTION_TYPE.END_DATE, payload: currentDate() })
+                                }}>Today</button>
                             </div>
                             <div className="col">
-                                <button className="btn btn-secondary">Last 7 days</button>
+                                <button type="button" className="btn btn-secondary" onClick={() => {
+                                    dispatch({ type: ACTION_TYPE.START_DATE, payload: lastSevenDays() })
+                                    dispatch({ type: ACTION_TYPE.END_DATE, payload: currentDate() })
+                                }}>Last 7 days</button>
                             </div>
                             <div className="col">
-                                <button className="btn btn-secondary">Last month</button>
+                                <button type="button" className="btn btn-secondary" onClick={() => {
+                                    dispatch({ type: ACTION_TYPE.START_DATE, payload: lastMonthStart() })
+                                    dispatch({ type: ACTION_TYPE.END_DATE, payload: lastMonthEnd() })
+                                }}>Last month</button>
                             </div>
                             <div className="col">
-                                <button className="btn btn-secondary">This month</button>
+                                <button type="button" className="btn btn-secondary" onClick={()=>{
+                                    dispatch({ type: ACTION_TYPE.START_DATE, payload: thisMonthStart() })
+                                    dispatch({ type: ACTION_TYPE.END_DATE, payload: thisMonthEnd() })
+                                }}>This month</button>
                             </div>
                         </div>
                         <div className="row mb-3">
