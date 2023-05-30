@@ -1,36 +1,45 @@
 import React, { useState, useEffect, useRef } from "react";
 
-export interface UserFormState {
-    username: string;
-    password: string;
-}
+import { BASE_API } from "../helper/constants";
+
+import Login from "./Login";
+import Register from "./Register";
 
 interface Props {
-    login(state: UserFormState): Promise<boolean>;
-    register(state: UserFormState): Promise<boolean>;
-    verify(): Promise<string>;
+    getJwtToken(): string | null;
 }
 
 const UserForm = (props: Props) => {
     const [popupType, setPopupType] = useState<string>("close");
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
     const [forceUpdate, setForceUpdate] = useState(0);
 
     const user = useRef("");
+
+    const getUserApi = async () => {
+        const api = `${BASE_API}/auth/user`;
+        
+        const response = await fetch(api, {
+            headers: { "Authorization": `Bearer ${props.getJwtToken()}` },
+        });
+        if (!response.ok) {
+            localStorage.removeItem("jwt");
+            return;
+        }
+        const data = await response.json();
+        return data["username"];
+    }
 
     useEffect(() => {
         if (localStorage.getItem("jwt") === null) {
             user.current = "";
             return
         }
-        props.verify().then((username) => {
+        getUserApi().then((username) => {
             user.current = username;
             setForceUpdate(forceUpdate + 1);
         });
         return;
-    }, [])
+    }, [popupType])
 
     useEffect(() => {
         const modal = document.getElementById("popup");
@@ -45,219 +54,12 @@ const UserForm = (props: Props) => {
         }
     }, [popupType]);
 
-    useEffect(() => {
-        if (popupType === "register") {
-            const input = document.getElementById("confirm-password");
-            if (password !== confirmPassword) {
-                input?.classList.add("is-invalid");
-            } else {
-                input?.classList.remove("is-invalid");
-            }
-        }
-    }, [password, confirmPassword]);
-
-    const handleLoginSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        const state = {
-            username,
-            password,
-        }
-        if (!await props.login(state)) {
-
-            return;
-        }
-        user.current = username;
-        setPopupType("close");
-    }
-
-    const handleRegisterSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        if (password !== confirmPassword) {
-            return;
-        }
-
-        const state = {
-            username,
-            password,
-        }
-        if (!await props.register(state)) {
-
-            return;
-        }
-        user.current = username;
-        setPopupType("close");
-    }
-
     const popupPage = (type: string) => {
         switch (type) {
             case "login":
-                return (
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h5 className="modal-title">Login</h5>
-                            <button
-                                type="button"
-                                className="btn-close"
-                                data-bs-dismiss="modal"
-                                aria-label="Close"
-                                onClick={() => setPopupType("close")}
-                            />
-                        </div>
-                        <div className="modal-body">
-                            <div className="container-fluid">
-                                <div className="row">
-                                    <div className="col">
-                                        <form onSubmit={handleLoginSubmit}>
-                                            <div className="row mb-3">
-                                                <div className="col-3">
-                                                    <label
-                                                        htmlFor="username"
-                                                        className="col-form-label"
-                                                    >
-                                                        Username
-                                                    </label>
-                                                </div>
-                                                <div className="col">
-                                                    <input
-                                                        type="text"
-                                                        className="form-control"
-                                                        id="username"
-                                                        onChange={(event) => { setUsername(event.target.value) }}
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="row mb-3">
-                                                <div className="col-3">
-                                                    <label
-                                                        htmlFor="password"
-                                                        className="col-form-label"
-                                                    >
-                                                        Password
-                                                    </label>
-                                                </div>
-                                                <div className="col">
-                                                    <input
-                                                        type="password"
-                                                        className="form-control"
-                                                        id="password"
-                                                        onChange={(event) => { setPassword(event.target.value) }}
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="row justify-content-end">
-                                                <div className="col text-danger d-none" id="submit-info">
-                                                    Username or password is wrong.
-                                                </div>
-                                                <div className="col-auto">
-                                                    <button
-                                                        type="submit"
-                                                        className="btn btn-primary"
-                                                    >
-                                                        Login
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                );
+                return <Login setPopupType={setPopupType} />;
             case "register":
-                return (
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h5 className="modal-title">Register</h5>
-                            <button
-                                type="button"
-                                className="btn-close"
-                                data-bs-dismiss="modal"
-                                aria-label="Close"
-                                onClick={() => setPopupType("close")}
-                            />
-                        </div>
-                        <div className="modal-body">
-                            <div className="container-fluid">
-                                <div className="row">
-                                    <div className="col">
-                                        <form onSubmit={handleRegisterSubmit}>
-                                            <div className="row mb-3">
-                                                <div className="col-5">
-                                                    <label
-                                                        htmlFor="username"
-                                                        className="col-form-label"
-                                                    >
-                                                        Username
-                                                    </label>
-                                                </div>
-                                                <div className="col">
-                                                    <input
-                                                        type="text"
-                                                        className="form-control"
-                                                        id="username"
-                                                        onChange={(event) => { setUsername(event.target.value) }}
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="row mb-3">
-                                                <div className="col-5">
-                                                    <label
-                                                        htmlFor="password"
-                                                        className="col-form-label"
-                                                    >
-                                                        Password
-                                                    </label>
-                                                </div>
-                                                <div className="col">
-                                                    <input
-                                                        type="password"
-                                                        className="form-control"
-                                                        id="password"
-                                                        onChange={(event) => { setPassword(event.target.value) }}
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="row mb-3">
-                                                <div className="col-5">
-                                                    <label
-                                                        htmlFor="confirm-password"
-                                                        className="col-form-label"
-                                                    >
-                                                        Confirm Password
-                                                    </label>
-                                                </div>
-                                                <div className="col">
-                                                    <input
-                                                        type="password"
-                                                        className="form-control"
-                                                        id="confirm-password"
-                                                        onChange={(event) => { setConfirmPassword(event.target.value) }}
-                                                    />
-                                                    <div className="invalid-feedback">Confirm password is wrong.</div>
-                                                </div>
-                                            </div>
-                                            <div className="row justify-content-end">
-                                                <div className="col text-danger d-none" id="submit-info">
-                                                    User is existed.
-                                                </div>
-                                                <div className="col-auto">
-                                                    <button
-                                                        type="submit"
-                                                        className="btn btn-primary"
-                                                        id="submit"
-                                                    >
-                                                        Register
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                );
+                return <Register setPopupType={setPopupType} />;
             case "close":
                 return <div className="modal-content"></div>;
             default:

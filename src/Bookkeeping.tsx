@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import Header from "./component/Header";
 import SearchForm, { SearchFormState } from "./component/bookeeping/SearchForm";
 import AddForm, { AddFormState } from "./component/bookeeping/AddForm";
-import UserForm, { UserFormState } from "./component/bookeeping/UserForm";
+import UserForm from "./component/bookeeping/UserForm";
 
 // const BASE_API = "http://182.233.181.107:722"
-const BASE_API = "http://127.0.0.1:8080";
+const BASE_API = "http://192.168.0.15:8080";
 
 interface DetailInfo {
     id: number;
@@ -67,20 +67,6 @@ const Bookkeeping = () => {
         return token;
     }
 
-    const getUserApi = async () => {
-        const api = `${BASE_API}/auth/user`;
-        
-        const response = await fetch(api, {
-            headers: { "Authorization": `Bearer ${getJwtToken()}` },
-        });
-        if (!response.ok) {
-            localStorage.removeItem("jwt");
-            return;
-        }
-        const data = await response.json();
-        return data["username"];
-    }
-
     const getDetailApi = (state: SearchFormState) => {
         setApiStatus(0);
         const { category, ...others } = state;
@@ -111,40 +97,6 @@ const Bookkeeping = () => {
             body: JSON.stringify({...state, cost: parseInt(state.cost)}),
         }).then((response) => setApiStatus(response.status));
     };
-
-    const postLoginApi = async (state: UserFormState) => {
-        const api = `${BASE_API}/auth/login`;
-
-        const response = await fetch(api, {
-            method: "post",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(state),
-        });
-        if (!response.ok) {
-            return false;
-        }
-
-        const data = await response.json();
-        localStorage.setItem("jwt", data.jwt);
-        return true;
-    }
-
-    const postRegisterApi = async (state: UserFormState) => {
-        const api = `${BASE_API}/auth/register`;
-
-        const response = await fetch(api, {
-            method: "post",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(state),
-        });
-        if (!response.ok) {
-            return false;
-        }
-
-        const data = await response.json();
-        localStorage.setItem("jwt", data.jwt);
-        return true;
-    }
 
     const printApiResult = () => {
         if (apiStatus === 201) {
@@ -181,7 +133,7 @@ const Bookkeeping = () => {
                 <div className="container">
                     <div className="row">
                         <div className="col">
-                            <UserForm login={postLoginApi} register={postRegisterApi} verify={getUserApi} />
+                            <UserForm getJwtToken={getJwtToken} />
                         </div>
                     </div>
                     <div className="row">
