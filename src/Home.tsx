@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import Header from "./component/Header";
 
@@ -9,59 +10,40 @@ function Home() {
             <main>
                 <div className="container text-center">
                     <section>
-                        <div className="row">
-                            <div className="col">
+                        <div className="row mt-3">
+                            <div className="col-8">
                                 <div className="row">
                                     <div className="col">
-                                        <h2>About Me</h2>
+                                        <h2>Working Timer Project</h2>
                                     </div>
                                     <div className="col">
-                                        <p>Introduce Me</p>
+                                        <p>A timer for working time management with Pomodoro technique and 52/17 method.</p>
                                     </div>
                                 </div>
                             </div>
                             <div className="col">
-                                <button className="btn btn-secondary">
-                                    Go To About Me
-                                </button>
+                                <Link className="btn btn-secondary" to="/timer">
+                                    Go To Timer
+                                </Link>
                             </div>
                         </div>
                     </section>
                     <section>
-                        <div className="row">
-                            <div className="col">
+                        <div className="row mt-3">
+                            <div className="col-8">
                                 <div className="row">
                                     <div className="col">
-                                        <h2>Skills</h2>
+                                        <h2>Bookkeeping Project</h2>
                                     </div>
                                     <div className="col">
-                                        <p>Introduce my skills</p>
+                                        <p>This website provides a daily expense tracking service.</p>
                                     </div>
                                 </div>
                             </div>
                             <div className="col">
-                                <button className="btn btn-secondary">
-                                    Go To Skills
-                                </button>
-                            </div>
-                        </div>
-                    </section>
-                    <section>
-                        <div className="row">
-                            <div className="col">
-                                <div className="row">
-                                    <div className="col">
-                                        <h2>Web3</h2>
-                                    </div>
-                                    <div className="col">
-                                        <p>Introduce the web3 page</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col">
-                                <button className="btn btn-secondary">
-                                    Go To Web3
-                                </button>
+                                <Link className="btn btn-secondary" to="/bookkeeping">
+                                    Go To Bookkeeping
+                                </Link>
                             </div>
                         </div>
                     </section>
@@ -72,32 +54,3 @@ function Home() {
 }
 
 export default Home;
-
-/*
-<div className="Home">
-            <Header/>
-            <main>
-                <section>
-                    <h2>About Me</h2>
-                    <p>Introduce Me</p>
-                    <div>                    
-                        <button>Go To About Me</button>
-                    </div>
-                </section>
-                <section>
-                    <h2>Skills</h2>
-                    <p>Introduce my skills</p>
-                    <div>                    
-                        <button>Go To Skills</button>
-                    </div>
-                </section>
-                <section>
-                    <h2>Web3</h2>
-                    <p>Introduce the web3 page</p>
-                    <div>                    
-                        <button>Go To Web3</button>
-                    </div>
-                </section>
-            </main>
-        </div>
-*/

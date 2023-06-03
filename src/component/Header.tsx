@@ -5,11 +5,11 @@ export default function Header() {
     const [isCollapsed, setIsCollapsed] = useState(false);
 
     return (
-        <div className="container-fluid">
+        <div className="container-fluid mb-2">
             <div className="row">
                 <div className="col-12 px-0">
                     <nav className="navbar navbar-expand-md navbar-light bg-light px-5">
-                        <Link className="navbar-brand" to="/">
+                        <Link className="navbar-brand" to="/website">
                             <h1 className="logo">My Website</h1>
                         </Link>
                         <button
@@ -35,11 +35,6 @@ export default function Header() {
                         >
                             <ul className="navbar-nav">
                                 <li className="nav-item">
-                                    <Link className="nav-link" to="/about">
-                                        About Me
-                                    </Link>
-                                </li>
-                                <li className="nav-item">
                                     <Link className="nav-link" to="/timer">
                                         Timer
                                     </Link>
@@ -50,11 +45,6 @@ export default function Header() {
                                         to="/bookkeeping"
                                     >
                                         Bookkeeping
-                                    </Link>
-                                </li>
-                                <li className="nav-item">
-                                    <Link className="nav-link" to="/">
-                                        Web3
                                     </Link>
                                 </li>
                             </ul>
