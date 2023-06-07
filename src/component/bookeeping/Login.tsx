@@ -10,6 +10,7 @@ interface Props {
 const Login = (props: Props) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [wrong, setWrong] = useState(false);
 
     const postLoginApi = async (state: UserFormState) => {
         const api = `${BASE_API}/auth/login`;
@@ -30,12 +31,17 @@ const Login = (props: Props) => {
 
     const handleLoginSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        if (username === "" || password === "") {
+            setWrong(true);
+            return;
+        }
+
         const state = {
             username,
             password,
         }
         if (!await postLoginApi(state)) {
-
+            setWrong(true);
             return;
         }
         props.setPopupType("close");
@@ -94,9 +100,9 @@ const Login = (props: Props) => {
                                     </div>
                                 </div>
                                 <div className="row justify-content-end">
-                                    <div className="col text-danger d-none" id="submit-info">
+                                    {wrong ? <div className="col text-danger" id="submit-info">
                                         Username or password is wrong.
-                                    </div>
+                                    </div> : undefined}
                                     <div className="col-auto">
                                         <button
                                             type="submit"

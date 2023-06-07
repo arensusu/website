@@ -10,7 +10,7 @@ export default function Header() {
                 <div className="col-12 px-0">
                     <nav className="navbar navbar-expand-md navbar-light bg-light px-5">
                         <Link className="navbar-brand" to="/website">
-                            <h1 className="logo">My Website</h1>
+                            <h1 className="logo">HsuanJen Ko</h1>
                         </Link>
                         <button
                             className="navbar-toggler"

@@ -17,7 +17,7 @@ const UserForm = (props: Props) => {
 
     const getUserApi = async () => {
         const api = `${BASE_API}/auth/user`;
-        
+
         const response = await fetch(api, {
             headers: { "Authorization": `Bearer ${props.getJwtToken()}` },
         });
@@ -41,27 +41,12 @@ const UserForm = (props: Props) => {
         return;
     }, [popupType])
 
-    useEffect(() => {
-        const modal = document.getElementById("popup");
-        if (modal === null) return;
-
-        if (popupType === "close") {
-            modal.style.display = "none";
-            modal.className = "modal fade";
-        } else {
-            modal.style.display = "block";
-            modal.className = "modal fade show";
-        }
-    }, [popupType]);
-
     const popupPage = (type: string) => {
         switch (type) {
             case "login":
                 return <Login setPopupType={setPopupType} />;
             case "register":
                 return <Register setPopupType={setPopupType} />;
-            case "close":
-                return <div className="modal-content"></div>;
             default:
                 return undefined;
         }
@@ -72,18 +57,18 @@ const UserForm = (props: Props) => {
             return (
                 <div className="row justify-content-end">
                     <div className="col-auto">
-                        <p>{user.current}</p>
+                        <p className="fs-5 mt-1 mb-0">{user.current}</p>
                     </div>
                     <div className="col-auto">
-                    <button
-                        className="btn btn-danger"
-                        onClick={() => {
-                            localStorage.removeItem("jwt");
-                            setForceUpdate(forceUpdate + 1);
-                        }}
-                    >
-                        Logout
-                    </button>
+                        <button
+                            className="btn btn-danger"
+                            onClick={() => {
+                                localStorage.removeItem("jwt");
+                                setForceUpdate(forceUpdate + 1);
+                            }}
+                        >
+                            Logout
+                        </button>
                     </div>
                 </div>
             );
@@ -91,20 +76,20 @@ const UserForm = (props: Props) => {
             return (
                 <div className="row justify-content-end">
                     <div className="col-auto">
-                    <button
-                        className="btn btn-outline-primary"
-                        onClick={() => setPopupType("login")}
-                    >
-                        Login
-                    </button>
+                        <button
+                            className="btn btn-outline-primary"
+                            onClick={() => setPopupType("login")}
+                        >
+                            Login
+                        </button>
                     </div>
                     <div className="col-auto">
-                    <button
-                        className="btn btn-primary"
-                        onClick={() => setPopupType("register")}
-                    >
-                        Register
-                    </button>
+                        <button
+                            className="btn btn-primary"
+                            onClick={() => setPopupType("register")}
+                        >
+                            Register
+                        </button>
                     </div>
                 </div>
             );
@@ -114,13 +99,12 @@ const UserForm = (props: Props) => {
     return (
         <div className="container-fluid">
             {userAction()}
-            <div className="row">
-                <div className="modal fade" id="popup">
+            {popupType !== "close" ? <><div className="modal d-block bg-secondary opacity-50" id="modal-bg"></div>
+                <div className="modal d-block" id="popup">
                     <div className="modal-dialog modal-dialog-centered modal">
                         {popupPage(popupType)}
                     </div>
-                </div>
-            </div>
+                </div></> : undefined}
         </div>
     );
 };
