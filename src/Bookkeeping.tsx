@@ -3,9 +3,7 @@ import Header from "./component/Header";
 import SearchForm, { SearchFormState } from "./component/bookeeping/SearchForm";
 import AddForm, { AddFormState } from "./component/bookeeping/AddForm";
 import UserForm from "./component/bookeeping/UserForm";
-
-// const BASE_API = "http://182.233.181.107:722"
-const BASE_API = "http://192.168.0.15:8080";
+import {BASE_API} from "./component/helper/constants";
 
 interface DetailInfo {
     id: number;

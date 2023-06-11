@@ -10,9 +10,9 @@ const root = ReactDOM.createRoot(
 );
 root.render(
     <React.StrictMode>
-        <BrowserRouter>
+        <BrowserRouter basename="/website">
             <Routes>
-                <Route path="/website" element={<Home />} />
+                <Route path="/" element={<Home />} />
                 <Route path="/timer" element={<Timer />} />
                 <Route path="/bookkeeping" element={<Bookkeeping />} />
             </Routes>
